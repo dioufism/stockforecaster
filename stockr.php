@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <!--swiping page-->
 <?php
-   $curl = curl_init();
-    curl_setopt_array($curl, array(
-	   CURLOPT_URL => "https://apidojo-yahoo-finance-v1.p.rapidapi.com/stock/get-detail?region=US&lang=en&symbol=NBEV",
-	   CURLOPT_RETURNTRANSFER => true,
-	   CURLOPT_FOLLOWLOCATION => true,
-	   CURLOPT_ENCODING => "",
-	   CURLOPT_MAXREDIRS => 10,
-	   CURLOPT_TIMEOUT => 30,
-	   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-	   CURLOPT_CUSTOMREQUEST => "GET",
-	   CURLOPT_HTTPHEADER => array("x-rapidapi-host: apidojo-yahoo-finance-v1.p.rapidapi.com",
-		                           "x-rapidapi-key: d390c858damshf58d0da0107a27dp182135jsn25e9eb7b26a5"
-								   ),
-    ));
 
-    $response = curl_exec($curl);
-    $err = curl_error($curl);
+$curl = curl_init();
+$url = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/market/auto-complete?lang=en&region=US&query=DIS";
 
-    curl_close($curl);
+curl_setopt_array($curl, array(
+	CURLOPT_URL => $url,
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 30,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "GET",
+	CURLOPT_HTTPHEADER => array(
+		"x-rapidapi-host: apidojo-yahoo-finance-v1.p.rapidapi.com",
+		"x-rapidapi-key: d390c858damshf58d0da0107a27dp182135jsn25e9eb7b26a5"
+	),
+));
 
-    if ($err) {
-	   echo "cURL Error #:" . $err;
-    } else {
-	   echo $response;
-    }
+$response = curl_exec($curl);
+$err = curl_error($curl);
+curl_close($curl);
+
+if ($err) {
+	echo "cURL Error #:" . $err;
+} else {
+	parse_str($response);
+	echo $response;
+}
+
+require_once "DB_Functions.php";
+$database=new DB_Functions();
+$database->connectDB();
 ?>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
